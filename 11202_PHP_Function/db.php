@@ -51,8 +51,31 @@ function printdata($array)
 // $up = update("students", ['dept' => '5', 'status_code' => '001'], ['dept' => '100', 'name' => '項羽']);
 // dd($up);
 
-insert('dept', ['code' => '110', 'name' => '圖書館系']);
+// insert('dept', ['code' => '110', 'name' => '圖書館系']);
+del('students', ['dept' => '3', 'status_code' => '001']);
 
+
+function del($table, $id)
+{
+  $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
+  $pdo = new PDO($dsn, 'root', '');
+  $sql = "delete from `$table` where ";
+
+  if (is_array($id)) {
+
+    foreach ($id as $col => $value) {
+      $tmp[] = "`$col`='$value'";
+    }
+    $sql .=  join(" && ", $tmp);
+  } else if (is_numeric($id)) {
+    $sql .= " `id` = '$id'";
+  } else {
+    echo "錯誤:參數的資料型態必須是數字或陣列";
+  }
+
+  echo $sql;
+  return $pdo->exec($sql);
+}
 
 
 // crud 的 r
