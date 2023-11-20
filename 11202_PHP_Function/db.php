@@ -55,10 +55,26 @@ function printdata($array)
 del('students', ['dept' => '3', 'status_code' => '001']);
 
 
-function del($table, $id)
+$dsn = "mysql:host=localhost;charset=utf8;dbname=school";
+$pdo = new PDO($dsn, 'root', '');
+
+function pdo()
 {
   $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
   $pdo = new PDO($dsn, 'root', '');
+  return $pdo;
+}
+
+
+function del($table, $id)
+{
+  // 方法1 用 include 使用重複的程式碼
+  // include "pdo.php";
+  // 方法2 用 global 變數使用重複的程式碼
+  // global $pdo;
+  // 方法3 用 function 使用重複的程式碼
+  $pdo = pdo();
+
   $sql = "delete from `$table` where ";
 
   if (is_array($id)) {
@@ -73,7 +89,7 @@ function del($table, $id)
     echo "錯誤:參數的資料型態必須是數字或陣列";
   }
 
-  echo $sql;
+  // echo $sql;
   return $pdo->exec($sql);
 }
 
@@ -103,7 +119,7 @@ function all($table = null, $where = '', $other = '')
     }
 
     $sql .= $other;
-    echo 'all=>' . $sql;
+    // echo 'all=>' . $sql;
     $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
   } else {
@@ -129,7 +145,7 @@ function find($table, $id)
   } else {
     echo "錯誤:參數的資料型態必須是數字或陣列";
   }
-  echo 'find=>' . $sql;
+  // echo 'find=>' . $sql;
   $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
   return $row;
 }
@@ -161,7 +177,7 @@ function update($table, $id, $cols)
     echo "錯誤:參數的資料型態必須是數字或陣列";
   }
   // 測試用，程式最後上線時要記得拿掉
-  echo $sql;
+  // echo $sql;
   return $pdo->exec($sql);
 }
 
@@ -180,7 +196,7 @@ function insert($table, $values)
 
   $sql = $sql . $cols . " values " . $vals;
 
-  echo $sql;
+  // echo $sql;
   return $pdo->exec($sql);
 }
 
