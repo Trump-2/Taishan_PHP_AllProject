@@ -48,9 +48,11 @@ function printdata($array)
 // dd($rows);
 
 // $up = update('students', '3', ['dept' => '16', 'name' => '張明珠']);
-$up = update("students", ['dept' => '5', 'status_code' => '001'], ['dept' => '100', 'name' => '項羽']);
+// $up = update("students", ['dept' => '5', 'status_code' => '001'], ['dept' => '100', 'name' => '項羽']);
+// dd($up);
 
-dd($up);
+insert('dept', ['code' => '110', 'name' => '圖書館系']);
+
 
 
 // crud 的 r
@@ -109,6 +111,7 @@ function find($table, $id)
   return $row;
 }
 
+// $cols 是 set 後面接的欄位名稱和欄位值
 function update($table, $id, $cols)
 {
   $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
@@ -122,7 +125,7 @@ function update($table, $id, $cols)
   }
 
   $sql .= join(',', $tmp);
-
+  //
   $tmp = [];
   if (is_array($id)) {
     foreach ($id as $col => $value) {
@@ -135,6 +138,25 @@ function update($table, $id, $cols)
     echo "錯誤:參數的資料型態必須是數字或陣列";
   }
   // 測試用，程式最後上線時要記得拿掉
+  echo $sql;
+  return $pdo->exec($sql);
+}
+
+function insert($table, $values)
+{
+  $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
+  $pdo = new PDO($dsn, 'root', '');
+  $sql = "insert into `$table` ";
+
+
+
+
+  $cols = "(`" . join("`,`", array_keys($values)) . "`)";
+  // 這裡 join () 中直接使用 $values，是因為 join () 會直接對陣列元素 ( 欄位值 ) 做合併
+  $vals = "('" . join("','", $values) . "')";
+
+  $sql = $sql . $cols . " values " . $vals;
+
   echo $sql;
   return $pdo->exec($sql);
 }
