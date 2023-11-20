@@ -97,8 +97,7 @@ function del($table, $id)
 // crud 的 r
 function all($table = null, $where = '', $other = '')
 {
-  $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
-  $pdo = new PDO($dsn, 'root', '');
+  $pdo = pdo();
   $sql = "select * from `$table` ";
 
   if (isset($table) && !empty($table)) {
@@ -130,9 +129,7 @@ function all($table = null, $where = '', $other = '')
 //crud 的 r，針對某筆資料
 function find($table, $id)
 {
-  $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
-  $pdo = new PDO($dsn, 'root', '');
-
+  $pdo = pdo();
   $sql = "select * from `$table` ";
 
   if (is_array($id)) {
@@ -153,8 +150,7 @@ function find($table, $id)
 // $cols 是 set 後面接的欄位名稱和欄位值
 function update($table, $id, $cols)
 {
-  $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
-  $pdo = new PDO($dsn, 'root', '');
+  $pdo = pdo();
   $sql = "update `$table` set ";
 
   if (!empty($cols)) {
@@ -183,8 +179,7 @@ function update($table, $id, $cols)
 
 function insert($table, $values)
 {
-  $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
-  $pdo = new PDO($dsn, 'root', '');
+  $pdo = pdo();
   $sql = "insert into `$table` ";
 
 
